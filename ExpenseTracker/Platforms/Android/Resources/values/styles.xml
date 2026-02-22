@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Widget.Design.BottomNavigationView" parent="@style/Widget.MaterialComponents.BottomNavigationView">
+        <item name="itemTextAppearanceActive">@style/ExpenseTracker.BottomNavTextAppearance</item>
+        <item name="itemTextAppearanceInactive">@style/ExpenseTracker.BottomNavTextAppearance</item>
+    </style>
+
+    <style name="ExpenseTracker.BottomNavTextAppearance" parent="@style/TextAppearance.MaterialComponents.Caption">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+</resources>

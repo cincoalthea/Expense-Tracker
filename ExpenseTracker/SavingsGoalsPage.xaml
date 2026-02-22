@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ExpenseTracker.SavingsGoalsPage"
+             Title="Savings Goals"
+             Background="{StaticResource Secondary}">
+    <ContentPage.Resources>
+        <LinearGradientBrush x:Key="SavingsHeaderGradient" EndPoint="1,1">
+            <GradientStop Color="#9EDFFF" Offset="0" />
+            <GradientStop Color="#D4F2FF" Offset="1" />
+        </LinearGradientBrush>
+
+        <Style x:Key="CardStyle" TargetType="Border">
+            <Setter Property="Padding" Value="16" />
+            <Setter Property="Margin" Value="0,0,0,12" />
+            <Setter Property="StrokeThickness" Value="0" />
+            <Setter Property="BackgroundColor" Value="#F4FBFF" />
+            <Setter Property="StrokeShape">
+                <Setter.Value>
+                    <RoundRectangle CornerRadius="18" />
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="PrimaryButton" TargetType="Button">
+            <Setter Property="BackgroundColor" Value="#83CCF8" />
+            <Setter Property="TextColor" Value="White" />
+            <Setter Property="FontFamily" Value="OpenSansSemibold" />
+            <Setter Property="CornerRadius" Value="14" />
+            <Setter Property="Padding" Value="12,10" />
+        </Style>
+
+        <Style x:Key="ActionButton" TargetType="Button">
+            <Setter Property="BackgroundColor" Value="#D4EEFF" />
+            <Setter Property="TextColor" Value="#145780" />
+            <Setter Property="FontFamily" Value="OpenSansSemibold" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="Padding" Value="10,6" />
+            <Setter Property="CornerRadius" Value="10" />
+            <Setter Property="MinimumHeightRequest" Value="32" />
+            <Setter Property="MinimumWidthRequest" Value="32" />
+        </Style>
+    </ContentPage.Resources>
+
+    <ScrollView>
+        <VerticalStackLayout Padding="22,20,22,30" Spacing="0">
+            <Border Background="{StaticResource SavingsHeaderGradient}" StrokeThickness="0">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="28" />
+                </Border.StrokeShape>
+                <VerticalStackLayout Padding="20" Spacing="8">
+                    <Label Text="Savings Tracker"
+                           FontFamily="OpenSansSemibold"
+                           FontSize="30"
+                           TextColor="#0D4A71" />
+                    <Label Text="Track every savings goal and how far you are from your target."
+                           TextColor="#1A658F"
+                           FontSize="14" />
+                    <Label x:Name="SavingsSummaryLabel"
+                           Text="No goals yet"
+                           TextColor="#2A6D95"
+                           FontSize="13"
+                           FontFamily="OpenSansSemibold" />
+                    <Label x:Name="SavingsLiteracyLabel"
+                           Text="Tip: Save first, then spend. Automate transfer right after payday."
+                           TextColor="#2E678A"
+                           FontSize="12" />
+                </VerticalStackLayout>
+            </Border>
+
+            <Border Style="{StaticResource CardStyle}" Margin="0,14,0,12">
+                <VerticalStackLayout Spacing="12">
+                    <Label Text="Your Goals"
+                           FontFamily="OpenSansSemibold"
+                           FontSize="18"
+                           TextColor="#145780" />
+
+                    <VerticalStackLayout x:Name="SavingsGoalListLayout" Spacing="12">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate>
+                                <Border Style="{StaticResource CardStyle}" Margin="0">
+                                    <VerticalStackLayout Spacing="8">
+                                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
+                                            <Label Text="{Binding Name}"
+                                                   FontFamily="OpenSansSemibold"
+                                                   FontSize="16"
+                                                   TextColor="#1A4D70" />
+                                            <Label Grid.Column="1"
+                                                   Text="{Binding PercentText}"
+                                                   FontFamily="OpenSansSemibold"
+                                                   TextColor="#1A4D70" />
+                                        </Grid>
+
+                                        <Label Text="{Binding AmountSummaryText}" TextColor="#3B6A86" />
+                                        <Label Text="{Binding AdviceMonthlyText}" TextColor="#2E678A" FontSize="12" />
+                                        <Label Text="{Binding AdviceWeeklyText}" TextColor="#2E678A" FontSize="12" />
+                                        <Label Text="{Binding AdviceDailyText}" TextColor="#2E678A" FontSize="12" />
+                                        <Label Text="{Binding TipText}" TextColor="#416D86" FontSize="11" />
+
+                                        <ProgressBar Progress="{Binding Progress}" ProgressColor="#5FB3EC" HeightRequest="8" />
+
+                                        <Grid ColumnDefinitions="Auto,Auto,Auto,Auto" ColumnSpacing="8">
+                                            <Button Text="+ Saved"
+                                                    Style="{StaticResource ActionButton}"
+                                                    CommandParameter="{Binding Id}"
+                                                    Clicked="OnAddSavedClicked" />
+                                            <Button Grid.Column="1"
+                                                    Text="Edit"
+                                                    Style="{StaticResource ActionButton}"
+                                                    CommandParameter="{Binding Id}"
+                                                    Clicked="OnEditGoalClicked" />
+                                            <Button Grid.Column="2"
+                                                    Text="Delete"
+                                                    Style="{StaticResource ActionButton}"
+                                                    CommandParameter="{Binding Id}"
+                                                    Clicked="OnDeleteGoalClicked" />
+                                        </Grid>
+                                    </VerticalStackLayout>
+                                </Border>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </VerticalStackLayout>
+
+                    <Button Text="+ Add Savings Goal" Style="{StaticResource PrimaryButton}" Clicked="OnAddGoalClicked" />
+                </VerticalStackLayout>
+            </Border>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

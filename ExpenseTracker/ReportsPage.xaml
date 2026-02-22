@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ExpenseTracker.ReportsPage"
+             Title="Reports"
+             Background="{StaticResource Secondary}">
+    <ContentPage.Resources>
+        <Style x:Key="CardStyle" TargetType="Border">
+            <Setter Property="Padding" Value="16" />
+            <Setter Property="Margin" Value="0,0,0,12" />
+            <Setter Property="StrokeThickness" Value="0" />
+            <Setter Property="BackgroundColor" Value="#F4FBFF" />
+            <Setter Property="StrokeShape">
+                <Setter.Value>
+                    <RoundRectangle CornerRadius="18" />
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="ActionButton" TargetType="Button">
+            <Setter Property="BackgroundColor" Value="#83CCF8" />
+            <Setter Property="TextColor" Value="White" />
+            <Setter Property="FontFamily" Value="OpenSansSemibold" />
+            <Setter Property="CornerRadius" Value="12" />
+            <Setter Property="Padding" Value="10,8" />
+        </Style>
+
+        <Style x:Key="SmallButton" TargetType="Button">
+            <Setter Property="BackgroundColor" Value="#D4EEFF" />
+            <Setter Property="TextColor" Value="#145780" />
+            <Setter Property="FontFamily" Value="OpenSansSemibold" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="CornerRadius" Value="10" />
+            <Setter Property="Padding" Value="10,6" />
+            <Setter Property="MinimumHeightRequest" Value="32" />
+        </Style>
+    </ContentPage.Resources>
+
+    <ScrollView>
+        <VerticalStackLayout Padding="22,20,22,30" Spacing="0">
+            <Border Style="{StaticResource CardStyle}">
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="Reports &amp; Budgets" FontSize="28" FontFamily="OpenSansSemibold" TextColor="#0D4A71" />
+                    <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="8">
+                        <Button Text="◀" Style="{StaticResource SmallButton}" Clicked="OnPreviousMonthClicked" />
+                        <Label x:Name="CurrentMonthLabel"
+                               Grid.Column="1"
+                               HorizontalTextAlignment="Center"
+                               VerticalTextAlignment="Center"
+                               FontFamily="OpenSansSemibold"
+                               TextColor="#145780" />
+                        <Button Text="▶" Grid.Column="2" Style="{StaticResource SmallButton}" Clicked="OnNextMonthClicked" />
+                    </Grid>
+                    <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto" ColumnSpacing="12" RowSpacing="8">
+                        <Label Text="Income" TextColor="#3B6A86" />
+                        <Label x:Name="IncomeSummaryLabel" Grid.Column="1" HorizontalTextAlignment="End" FontFamily="OpenSansSemibold" />
+                        <Label Grid.Row="1" Text="Expenses" TextColor="#3B6A86" />
+                        <Label x:Name="ExpenseSummaryLabel" Grid.Row="1" Grid.Column="1" HorizontalTextAlignment="End" FontFamily="OpenSansSemibold" />
+                    </Grid>
+                    <Label x:Name="NetSummaryLabel" FontFamily="OpenSansSemibold" FontSize="16" />
+                </VerticalStackLayout>
+            </Border>
+
+            <Border Style="{StaticResource CardStyle}">
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="Spending By Category" FontSize="18" FontFamily="OpenSansSemibold" TextColor="#145780" />
+                    <VerticalStackLayout x:Name="CategoryListLayout" Spacing="10">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate>
+                                <VerticalStackLayout Spacing="4">
+                                    <Grid ColumnDefinitions="*,Auto">
+                                        <Label Text="{Binding Name}" />
+                                        <Label Grid.Column="1" Text="{Binding AmountText}" FontFamily="OpenSansSemibold" />
+                                    </Grid>
+                                    <ProgressBar Progress="{Binding Progress}" ProgressColor="#5FB3EC" HeightRequest="8" />
+                                </VerticalStackLayout>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </VerticalStackLayout>
+                </VerticalStackLayout>
+            </Border>
+
+            <Border Style="{StaticResource CardStyle}">
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="Budget Limits" FontSize="18" FontFamily="OpenSansSemibold" TextColor="#145780" />
+                    <VerticalStackLayout x:Name="BudgetListLayout" Spacing="8">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate>
+                                <Grid ColumnDefinitions="*,Auto,Auto,Auto" ColumnSpacing="8">
+                                    <VerticalStackLayout Spacing="1">
+                                        <Label Text="{Binding Name}" />
+                                        <Label Text="{Binding DetailText}" FontSize="11" TextColor="#5A7D93" />
+                                    </VerticalStackLayout>
+                                    <Label Grid.Column="1" Text="{Binding AmountText}" FontFamily="OpenSansSemibold" />
+                                    <Button Grid.Column="2" Text="Edit" Style="{StaticResource SmallButton}" CommandParameter="{Binding Id}" Clicked="OnEditBudgetClicked" />
+                                    <Button Grid.Column="3" Text="Delete" Style="{StaticResource SmallButton}" CommandParameter="{Binding Id}" Clicked="OnDeleteBudgetClicked" />
+                                </Grid>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </VerticalStackLayout>
+                    <Button Text="+ Add Budget Limit" Style="{StaticResource ActionButton}" Clicked="OnAddBudgetClicked" />
+                </VerticalStackLayout>
+            </Border>
+
+            <Border Style="{StaticResource CardStyle}">
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="Backup &amp; Export" FontSize="18" FontFamily="OpenSansSemibold" TextColor="#145780" />
+                    <Button Text="Export Full Backup (JSON)" Style="{StaticResource ActionButton}" Clicked="OnExportJsonClicked" />
+                    <Button Text="Export Transactions (CSV)" Style="{StaticResource ActionButton}" Clicked="OnExportCsvClicked" />
+                    <Button Text="Import Backup (JSON)" Style="{StaticResource ActionButton}" Clicked="OnImportJsonClicked" />
+                    <Label Text="Exports are saved in app data under /Backups." FontSize="11" TextColor="#5A7D93" />
+                </VerticalStackLayout>
+            </Border>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
