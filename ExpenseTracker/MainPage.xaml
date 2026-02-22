@@ -1,0 +1,254 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ExpenseTracker.MainPage"
+             Title="Expense Tracker"
+             Background="{StaticResource Secondary}">
+    <ContentPage.Resources>
+        <LinearGradientBrush x:Key="HeaderGradient" EndPoint="1,1">
+            <GradientStop Color="#96DAFF" Offset="0" />
+            <GradientStop Color="#C9EEFF" Offset="1" />
+        </LinearGradientBrush>
+
+        <Style x:Key="TitleText" TargetType="Label">
+            <Setter Property="FontFamily" Value="OpenSansSemibold" />
+            <Setter Property="FontSize" Value="32" />
+            <Setter Property="TextColor" Value="#0D4A71" />
+        </Style>
+
+        <Style x:Key="SectionHeaderText" TargetType="Label">
+            <Setter Property="FontFamily" Value="OpenSansSemibold" />
+            <Setter Property="FontSize" Value="18" />
+            <Setter Property="TextColor" Value="#145780" />
+        </Style>
+
+        <Style x:Key="CardStyle" TargetType="Border">
+            <Setter Property="Padding" Value="16" />
+            <Setter Property="Margin" Value="0,0,0,12" />
+            <Setter Property="StrokeThickness" Value="0" />
+            <Setter Property="BackgroundColor" Value="#F4FBFF" />
+            <Setter Property="StrokeShape">
+                <Setter.Value>
+                    <RoundRectangle CornerRadius="18" />
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Shadow">
+                <Setter.Value>
+                    <Shadow Brush="#25004D7A" Offset="0,6" Radius="18" />
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="SoftPillButton" TargetType="Button">
+            <Setter Property="BackgroundColor" Value="#83CCF8" />
+            <Setter Property="TextColor" Value="White" />
+            <Setter Property="FontFamily" Value="OpenSansSemibold" />
+            <Setter Property="CornerRadius" Value="14" />
+            <Setter Property="Padding" Value="12,10" />
+        </Style>
+
+        <Style x:Key="RowActionButton" TargetType="Button">
+            <Setter Property="BackgroundColor" Value="#D4EEFF" />
+            <Setter Property="TextColor" Value="#145780" />
+            <Setter Property="FontFamily" Value="OpenSansSemibold" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="Padding" Value="10,6" />
+            <Setter Property="CornerRadius" Value="10" />
+            <Setter Property="MinimumHeightRequest" Value="32" />
+            <Setter Property="MinimumWidthRequest" Value="32" />
+        </Style>
+    </ContentPage.Resources>
+
+    <ScrollView>
+        <VerticalStackLayout Padding="22,20,22,30" Spacing="0">
+            <Border Background="{StaticResource HeaderGradient}" StrokeThickness="0">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="28" />
+                </Border.StrokeShape>
+                <VerticalStackLayout Padding="20" Spacing="8">
+                    <Label Text="Expense Tracker" Style="{StaticResource TitleText}" />
+                    <Label Text="Plan subscriptions, monthly income, and allowance sharing"
+                           TextColor="#1A658F"
+                           FontSize="14" />
+                    <Border Margin="0,8,0,0"
+                            Padding="14"
+                            BackgroundColor="#BDE8FF"
+                            StrokeThickness="0"
+                            HorizontalOptions="Start">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="14" />
+                        </Border.StrokeShape>
+                        <VerticalStackLayout Spacing="2">
+                            <Label Text="This Month Balance" FontSize="12" TextColor="#2A6D95" />
+                            <Label x:Name="MonthBalanceLabel"
+                                   Text="$0.00"
+                                   FontSize="28"
+                                   FontFamily="OpenSansSemibold"
+                                   TextColor="#0E4568" />
+                        </VerticalStackLayout>
+                    </Border>
+                </VerticalStackLayout>
+            </Border>
+
+            <Border Style="{StaticResource CardStyle}" Margin="0,14,0,12">
+                <VerticalStackLayout Spacing="12">
+                    <Label Text="Monthly Subscriptions" Style="{StaticResource SectionHeaderText}" />
+                    <VerticalStackLayout x:Name="SubscriptionListLayout" Spacing="8">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate>
+                                <Grid ColumnDefinitions="*,Auto,Auto,Auto" ColumnSpacing="8">
+                                    <Label Text="{Binding Name}" />
+                                    <Label Grid.Column="1" Text="{Binding AmountText}" FontFamily="OpenSansSemibold" />
+                                    <Button Grid.Column="2"
+                                            Text="Edit"
+                                            Style="{StaticResource RowActionButton}"
+                                            CommandParameter="{Binding Id}"
+                                            Clicked="OnEditSubscriptionClicked">
+                                        <Button.Triggers>
+                                            <DataTrigger TargetType="Button" Binding="{Binding Id}" Value="0">
+                                                <Setter Property="IsVisible" Value="False" />
+                                            </DataTrigger>
+                                        </Button.Triggers>
+                                    </Button>
+                                    <Button Grid.Column="3"
+                                            Text="Delete"
+                                            Style="{StaticResource RowActionButton}"
+                                            CommandParameter="{Binding Id}"
+                                            Clicked="OnDeleteSubscriptionClicked">
+                                        <Button.Triggers>
+                                            <DataTrigger TargetType="Button" Binding="{Binding Id}" Value="0">
+                                                <Setter Property="IsVisible" Value="False" />
+                                            </DataTrigger>
+                                        </Button.Triggers>
+                                    </Button>
+                                </Grid>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </VerticalStackLayout>
+                    <Button Text="+ Add Subscription" Style="{StaticResource SoftPillButton}" Clicked="OnAddSubscriptionClicked" />
+                </VerticalStackLayout>
+            </Border>
+
+            <Border Style="{StaticResource CardStyle}">
+                <VerticalStackLayout Spacing="12">
+                    <Label Text="Monthly Income &amp; Allowance" Style="{StaticResource SectionHeaderText}" />
+                    <VerticalStackLayout x:Name="IncomeSourceListLayout" Spacing="8">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate>
+                                <Grid ColumnDefinitions="*,Auto,Auto,Auto" ColumnSpacing="8">
+                                    <Label Text="{Binding Name}" />
+                                    <Label Grid.Column="1"
+                                           Text="{Binding AmountText}"
+                                           TextColor="#1D9169"
+                                           FontFamily="OpenSansSemibold" />
+                                    <Button Grid.Column="2"
+                                            Text="Edit"
+                                            Style="{StaticResource RowActionButton}"
+                                            CommandParameter="{Binding Id}"
+                                            Clicked="OnEditIncomeSourceClicked">
+                                        <Button.Triggers>
+                                            <DataTrigger TargetType="Button" Binding="{Binding Id}" Value="0">
+                                                <Setter Property="IsVisible" Value="False" />
+                                            </DataTrigger>
+                                        </Button.Triggers>
+                                    </Button>
+                                    <Button Grid.Column="3"
+                                            Text="Delete"
+                                            Style="{StaticResource RowActionButton}"
+                                            CommandParameter="{Binding Id}"
+                                            Clicked="OnDeleteIncomeSourceClicked">
+                                        <Button.Triggers>
+                                            <DataTrigger TargetType="Button" Binding="{Binding Id}" Value="0">
+                                                <Setter Property="IsVisible" Value="False" />
+                                            </DataTrigger>
+                                        </Button.Triggers>
+                                    </Button>
+                                </Grid>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </VerticalStackLayout>
+                    <Button Text="+ Add Income Source" Style="{StaticResource SoftPillButton}" Clicked="OnAddIncomeSourceClicked" />
+                </VerticalStackLayout>
+            </Border>
+
+            <Border Style="{StaticResource CardStyle}">
+                <VerticalStackLayout Spacing="12">
+                    <Label Text="Spending Tracker" Style="{StaticResource SectionHeaderText}" />
+                    <VerticalStackLayout x:Name="SpendingListLayout" Spacing="8">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate>
+                                <Grid ColumnDefinitions="*,Auto,Auto,Auto" ColumnSpacing="8">
+                                    <VerticalStackLayout Spacing="1">
+                                        <Label Text="{Binding Name}" />
+                                        <Label Text="{Binding DateText}" FontSize="11" TextColor="#5A7D93" />
+                                    </VerticalStackLayout>
+                                    <Label Grid.Column="1"
+                                           Text="{Binding AmountText}"
+                                           TextColor="#A14A4A"
+                                           FontFamily="OpenSansSemibold" />
+                                    <Button Grid.Column="2"
+                                            Text="Edit"
+                                            Style="{StaticResource RowActionButton}"
+                                            CommandParameter="{Binding Id}"
+                                            Clicked="OnEditExpenseClicked">
+                                        <Button.Triggers>
+                                            <DataTrigger TargetType="Button" Binding="{Binding Id}" Value="0">
+                                                <Setter Property="IsVisible" Value="False" />
+                                            </DataTrigger>
+                                        </Button.Triggers>
+                                    </Button>
+                                    <Button Grid.Column="3"
+                                            Text="Delete"
+                                            Style="{StaticResource RowActionButton}"
+                                            CommandParameter="{Binding Id}"
+                                            Clicked="OnDeleteExpenseClicked">
+                                        <Button.Triggers>
+                                            <DataTrigger TargetType="Button" Binding="{Binding Id}" Value="0">
+                                                <Setter Property="IsVisible" Value="False" />
+                                            </DataTrigger>
+                                        </Button.Triggers>
+                                    </Button>
+                                </Grid>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </VerticalStackLayout>
+                    <Button Text="+ Add Expense" Style="{StaticResource SoftPillButton}" Clicked="OnAddExpenseClicked" />
+                </VerticalStackLayout>
+            </Border>
+
+            <Border Style="{StaticResource CardStyle}">
+                <VerticalStackLayout Spacing="12">
+                    <Label Text="Budget Alerts" Style="{StaticResource SectionHeaderText}" />
+                    <VerticalStackLayout x:Name="BudgetAlertListLayout" Spacing="8">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate>
+                                <Grid ColumnDefinitions="*,Auto">
+                                    <Label Text="{Binding Name}" />
+                                    <Label Grid.Column="1"
+                                           Text="{Binding AmountText}"
+                                           FontFamily="OpenSansSemibold"
+                                           TextColor="{Binding AlertColor}" />
+                                </Grid>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </VerticalStackLayout>
+                </VerticalStackLayout>
+            </Border>
+
+            <Border Style="{StaticResource CardStyle}">
+                <VerticalStackLayout Spacing="12">
+                    <Label Text="Allowance Split Planner" Style="{StaticResource SectionHeaderText}" />
+                    <Label x:Name="SplitPlannerSubtitle" Text="Auto split allowance into goals (50/30/20)" TextColor="#3B6A86" />
+                    <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto,Auto" RowSpacing="8">
+                        <Label Text="Needs (50%)" />
+                        <Label x:Name="NeedsAmountLabel" Grid.Column="1" Text="$250" FontFamily="OpenSansSemibold" />
+                        <Label Grid.Row="1" Text="Savings (30%)" />
+                        <Label x:Name="SavingsAmountLabel" Grid.Row="1" Grid.Column="1" Text="$150" FontFamily="OpenSansSemibold" />
+                        <Label Grid.Row="2" Text="Fun (20%)" />
+                        <Label x:Name="FunAmountLabel" Grid.Row="2" Grid.Column="1" Text="$100" FontFamily="OpenSansSemibold" />
+                    </Grid>
+                </VerticalStackLayout>
+            </Border>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
