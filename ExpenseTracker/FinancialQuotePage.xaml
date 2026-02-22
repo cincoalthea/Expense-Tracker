@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ExpenseTracker.FinancialQuotePage"
+             Title="Daily Quote">
+    <ScrollView>
+        <VerticalStackLayout Padding="24" Spacing="20" VerticalOptions="Center">
+            <Border Padding="20"
+                    Stroke="{AppThemeBinding Light=#D9D9D9, Dark=#4A4A4A}"
+                    StrokeThickness="1"
+                    StrokeShape="RoundRectangle 12">
+                <Label x:Name="QuoteLabel"
+                       FontSize="18"
+                       HorizontalTextAlignment="Center" />
+            </Border>
+
+            <Button Text="Enter App"
+                    FontSize="18"
+                    Clicked="OnEnterAppClicked" />
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
